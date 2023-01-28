@@ -1,5 +1,19 @@
 
 const routes = [
+
+  {
+    path: '/public',
+    name: 'public',
+    component: () => import('layouts/AuthLayout.vue'),
+    redirect: 'login',
+    children: [
+      {
+        path: 'login',
+        name: 'login-page',
+        component: () => import('pages/login.vue')
+      }
+    ]
+  },
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
