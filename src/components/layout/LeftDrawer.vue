@@ -8,19 +8,7 @@
           <div class="q-pa-sm">Categories</div>
           <q-separator  />
 
-          <div class="q-pa-md" v-if="categories.isLoading.value">
-    <q-linear-progress indeterminate />
-
-    <q-linear-progress indeterminate color="primary" class="q-mt-sm" />
-
-    <q-linear-progress indeterminate color="primary" class="q-mt-sm" />
-
-    <q-linear-progress indeterminate rounded color="primary" class="q-mt-sm" />
-
-    <q-linear-progress indeterminate rounded color="primary" class="q-mt-sm" />
-
-    <q-linear-progress indeterminate rounded color="primary" class="q-mt-sm" />
-  </div>
+          <LinearProgress v-if="categories.isLoading.value" :rows="3" color="primary"/>
 
           <template v-else>
 
@@ -41,9 +29,13 @@
 
 <script>
 import { useCategory } from 'src/composables/useCategory'
+import LinearProgress from 'components/loader/LinearProgress.vue'
 export default {
 
   logoHeight: '150px',
+  components: {
+    LinearProgress
+  },
   props: {
     isOpen: {
       type: Boolean,
