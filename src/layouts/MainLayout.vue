@@ -21,9 +21,18 @@
           <q-btn flat round dense icon="logout" class="q-ml-sm-lg"/>
 
       </q-toolbar>
+
+      <q-tabs align="left">
+        <q-route-tab to="/home" label="Home" />
+        <q-route-tab to="/projects" label="Projects" />
+        <q-route-tab to="/orders" label="Orders" />
+        <q-route-tab to="/invoices" label="Invoices" />
+
+      </q-tabs>
+
     </q-header>
 
-    <LeftDrawer :isOpen="leftDrawerOpen"/>
+    <LeftDrawer :isOpen="leftDrawerOpen" :width="200"/>
 
     <q-drawer  v-model="rightDrawerOpen" side="right" elevated>
       <!-- drawer content -->

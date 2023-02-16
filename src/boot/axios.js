@@ -7,7 +7,54 @@ import axios from 'axios'
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: 'https://api.example.com' })
+
+const config = {
+  baseURL: 'https://api-bii.preview.im/api/v1/',
+  timeout: 15000,
+  headers: {
+    'Content-Type': 'application/json; charset=utf-8',
+    Accept: 'application/json'
+  }
+}
+const api = axios.create(config)
+
+const getToken = () => {
+  return localStorage.getItem('bii-token')
+}
+const setToken = (token) => {
+  api.defaults.headers.common.Authorization = 'Bearer ' + token
+  localStorage.setItem('bii-token', token)
+}
+
+const token = getToken()
+
+if (token) { setToken(token) }
+
+const resetToken = () => {
+  localStorage.removeItem('bii-token')
+}
+
+// INTERCEPTORS
+api.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      resetToken()
+    }
+
+    if (error.response && error.response.status === 429) {
+      window.alert('Network is Slow. Please try again in some time.')
+    }
+    // If status is not provided, axios is not sure what happend!
+    if (!error.response && !error.status) {
+      return Promise.reject(error)
+    } else {
+      return Promise.reject(error.response)
+    }
+  }
+)
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
@@ -21,4 +68,4 @@ export default boot(({ app }) => {
   //       so you can easily perform requests against your app's API
 })
 
-export { api }
+export { api, setToken, getToken }

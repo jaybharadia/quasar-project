@@ -1,4 +1,8 @@
 <template>
+   <q-form
+      @submit="onSubmit"
+      class="q-gutter-md"
+    >
     <q-card bordered class=" my-card q-pa-m"  style="max-width: 400px">
       <q-card-section>
         <div class="text-h6">Login</div>
@@ -16,14 +20,15 @@
         filled
         v-model="username"
         label="Username *"
-        hint="GST No"
         lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Please type something']"
+        :rules="[ val => val && val.length > 0 || 'Field is required*']"
       />
 
       <q-input
         filled
         type="password"
+        :rules="[ val => val && val.length > 0 || 'Field is required*' ]"
+        lazy-rules
         v-model="password"
         label="Your password *"
       />
@@ -35,6 +40,8 @@
 
       </q-card-section>
     </q-card>
+
+    </q-form>
 </template>
 
 <script>
@@ -43,6 +50,10 @@ export default {
     return {
       username: null,
       password: null
+    }
+  },
+  methods: {
+    onSubmit () {
     }
   }
 
