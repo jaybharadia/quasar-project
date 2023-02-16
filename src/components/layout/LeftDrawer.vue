@@ -5,10 +5,13 @@
       <q-scroll-area :style="{ 'border-right': '1px solid #ddd', height: '100%' }">
 
         <q-list padding>
-          <div class="q-pa-sm">Categories</div>
+          <!-- <div class="q-pa-sm">Categories</div> -->
+          <q-toolbar class="bg-primary text-white shadow-2">
+      <q-toolbar-title>Categories</q-toolbar-title>
+    </q-toolbar>
           <q-separator  />
 
-          <LinearProgress v-if="categories.isLoading.value" :rows="3" color="primary"/>
+          <LinearProgress v-if="categories.isLoading.value" :rows="3" color="primary-light"/>
 
           <template v-else>
 
