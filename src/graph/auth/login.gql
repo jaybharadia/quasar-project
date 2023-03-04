@@ -1,0 +1,6 @@
+mutation ($username: String, $password: String, $defaultPartnerOtpSend: Boolean) {
+  login(username: $username, password: $password, defaultPartnerOtpSend: $defaultPartnerOtpSend) {
+    code
+    message
+  }
+}

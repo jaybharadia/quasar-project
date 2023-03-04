@@ -1,65 +1,62 @@
 <template>
-   <q-form
-      @submit="onSubmit"
-      class="q-gutter-md"
-    >
-    <q-card bordered class=" my-card q-pa-m"  style="max-width: 400px">
-      <q-card-section>
-        <div class="text-h6">Login</div>
-      </q-card-section>
+  <div class="q-pa-md">
+    <q-card bordered class="my-card q-pa-m">
+      <q-stepper v-model="step" ref="stepper" color="primary" animated>
+        <q-step
+          :name="1"
+          title="Enter Username and Password"
+          icon="grid_view"
+          :done="step > 1"
+        >
+          <CredentialsForm @credential-success="onCredentialSuccess" />
+        </q-step>
 
-      <q-separator dark inset />
-
-      <q-card-section>
-        <q-form
-      @submit="onSubmit"
-      @reset="onReset"
-      class="q-gutter-md"
-    >
-      <q-input
-        filled
-        v-model="username"
-        label="Username *"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 || 'Field is required*']"
-      />
-
-      <q-input
-        filled
-        type="password"
-        :rules="[ val => val && val.length > 0 || 'Field is required*' ]"
-        lazy-rules
-        v-model="password"
-        label="Your password *"
-      />
-
-      <div>
-        <q-btn label="Submit" type="submit" color="primary"/>
-      </div>
-    </q-form>
-
-      </q-card-section>
+        <q-step
+          :name="2"
+          title="Enter OTP"
+          icon="create_new_folder"
+          :done="step > 2"
+        >
+          <OtpForm :username="username" :password="password" />
+        </q-step>
+      </q-stepper>
     </q-card>
-
-    </q-form>
+  </div>
 </template>
 
 <script>
+import { useForm } from 'src/composables/useForm';
+import CredentialsForm from 'src/components/login/CredentialsForm.vue';
+import OtpForm from 'src/components/login/OtpForm.vue';
 export default {
-  data () {
-    return {
-      username: null,
-      password: null
-    }
+  components: {
+    CredentialsForm,
+    OtpForm,
   },
-  methods: {
-    onSubmit () {
-    }
-  }
+  setup() {
+    const form = useForm();
 
-}
+    return {
+      form,
+    };
+  },
+  mounted() {},
+  data() {
+    return {
+      step: 1,
+      username: null,
+      password: null,
+    };
+  },
+
+  methods: {
+    onCredentialSuccess(data) {
+      this.username = data.username;
+      this.password = data.password;
+      this.$refs.stepper.next();
+    },
+  },
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

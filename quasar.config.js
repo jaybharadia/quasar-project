@@ -9,8 +9,8 @@
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
 const { configure } = require('quasar/wrappers')
-
-module.exports = configure(function (/* ctx */) {
+const graphql = require('@rollup/plugin-graphql').default
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       // fix: true,
@@ -28,8 +28,9 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
-
-      'axios'
+      'plugins/axios',
+      'plugins/graphql',
+      'global'
     ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
@@ -58,7 +59,7 @@ module.exports = configure(function (/* ctx */) {
         node: 'node16'
       },
 
-      vueRouterMode: 'hash' // available values: 'hash', 'history'
+      vueRouterMode: 'hash', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -68,29 +69,40 @@ module.exports = configure(function (/* ctx */) {
       // publicPath: '/',
       // analyze: true,
       // env: {},
+      env: {
+        GRAPHQL_URL: 'https://api-bii.preview.im/graphql',
+        GRAPHQL_OPEN_URL: 'https://api-bii.preview.im/graphql/open',
+        REST_API_URL: 'https://api-bii.preview.im/api/v1/'
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
-
-      // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
 
-      // vitePlugins: [
-      //   [ 'package-name', { ..options.. } ]
-      // ]
+      vitePlugins: [
+        [graphql()]
+      ],
+
+      extendViteConf (viteConfig) {
+        viteConfig.resolve.extensions = ['.js', '.json', '.vue', '.gql']
+      }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
-      open: true // opens browser window automatically
+      open: false // opens browser window automatically
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        notify: {
+          position: 'top'
+        }
+      },
       cssAddon: true,
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -104,7 +116,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: ['Notify']
     },
 
     // animations: 'all', // --- includes all animations

@@ -1,4 +1,4 @@
-import { api } from '../boot/axios'
+import { api } from 'src/boot/plugins/axios'
 
 export const get = (params = null) => {
   return api

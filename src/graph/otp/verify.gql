@@ -1,0 +1,30 @@
+mutation ($username: String!, $password: String!, $code: Int!, $codeFor: String!) {
+  verifyCode(username: $username, password: $password, code: $code, codeFor: $codeFor) {
+    token
+    showKYCApproveNotification
+    user {
+      id
+      name
+      mobileNo
+      email
+      status
+      emailVerifiedAt
+      mobileVerifiedAt
+      username
+      companies {
+        gstNo
+        panNo
+        name
+        mobileNo
+        mcc
+        projects {
+          name
+        }
+        partners {
+          name
+        }
+        id
+      }
+    }
+  }
+}
