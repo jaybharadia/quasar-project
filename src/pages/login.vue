@@ -17,7 +17,11 @@
           icon="create_new_folder"
           :done="step > 2"
         >
-          <OtpForm :username="username" :password="password" />
+          <OtpForm
+            :username="username"
+            :password="password"
+            :getOtpOnDefaultPartner="getOtpOnDefaultPartner"
+          />
         </q-step>
       </q-stepper>
     </q-card>
@@ -31,21 +35,22 @@ import OtpForm from 'src/components/login/OtpForm.vue';
 export default {
   components: {
     CredentialsForm,
-    OtpForm,
+    OtpForm
   },
   setup() {
     const form = useForm();
 
     return {
-      form,
+      form
     };
   },
   mounted() {},
   data() {
     return {
       step: 1,
-      username: null,
-      password: null,
+      username: 'jay',
+      password: 'Dev@7$pan',
+      getOtpOnDefaultPartner: false
     };
   },
 
@@ -53,9 +58,10 @@ export default {
     onCredentialSuccess(data) {
       this.username = data.username;
       this.password = data.password;
+      this.getOtpOnDefaultPartner = data.getOtpOnDefaultPartner;
       this.$refs.stepper.next();
-    },
-  },
+    }
+  }
 };
 </script>
 

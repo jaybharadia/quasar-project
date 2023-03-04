@@ -3,10 +3,9 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { setupGraphQL } from 'src/boot/plugins/graphql'
-setupGraphQL()
+import { defineComponent } from 'vue';
+
 export default defineComponent({
   name: 'App'
-})
+});
 </script>

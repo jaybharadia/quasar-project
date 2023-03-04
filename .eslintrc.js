@@ -70,6 +70,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': 'off',
+    "space-before-function-paren" : "off",
     
     'prefer-promise-reject-errors': 'off',
 
