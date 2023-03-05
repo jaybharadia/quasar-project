@@ -63,7 +63,7 @@ const apolloProvider = createApolloProvider({
   defaultClient: apolloClient,
 
   clients: {
-    publicClient: publicApolloClient
+    public: publicApolloClient
   }
 });
 
