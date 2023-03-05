@@ -1,7 +1,6 @@
 <template>
   <ApolloMutation
-    ref="credentialsRef"
-    clientId="publicClient"
+    clientId="public"
     :mutation="
       (gql) =>
         gql`
@@ -65,7 +64,6 @@
 <script>
 import login from 'src/graph/auth/login.gql';
 import { useForm } from 'src/composables/useForm';
-
 export default {
   components: {},
   setup() {

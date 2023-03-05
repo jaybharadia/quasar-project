@@ -1,5 +1,7 @@
 <template>
-      <q-btn color="primary" :label="label" :icon="icon" :loading="loading" />
+  <q-btn color="primary" :label="label" :icon="icon" :loading="loading">
+    <slot></slot>
+  </q-btn>
 </template>
 
 <script>
@@ -17,7 +19,6 @@ export default {
       type: Boolean,
       default: false
     }
-
   }
-}
+};
 </script>

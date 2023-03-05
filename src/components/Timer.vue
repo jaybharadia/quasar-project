@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div>
-      <span>{{ label }} : </span>
-      <span v-if="timer.days > 0">{{ timer.days }} : </span
-      ><span v-if="timer.hours > 0">{{ timer.hours }} : </span
-      ><span>{{ timer.minutes }}m : </span><span>{{ timer.seconds }}s</span>
-    </div>
+    <span>{{ label }} : </span>
+    <span v-if="timer.days > 0">{{ timer.days }} : </span
+    ><span v-if="timer.hours > 0">{{ timer.hours }} : </span
+    ><span>{{ timer.minutes }}m : </span><span>{{ timer.seconds }}s</span>
   </div>
 </template>
 
