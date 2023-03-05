@@ -1,6 +1,6 @@
 <template>
   <ApolloMutation
-    clientId="publicClient"
+    clientId="public"
     :mutation="
       (gql) =>
         gql`
@@ -8,11 +8,7 @@
         `
     "
     :variables="variables"
-    @done="
-      form.notifySuccess(
-        `Welcome ${$event.data.verifyCode.user.name} to BuildItIndia`
-      )
-    "
+    @done="onLoginSuccess"
     @error="(error) => form.notifyError(error.message)"
     v-slot="{ mutate, loading }"
   >
@@ -20,7 +16,7 @@
       <div>
         <q-input
           class="col-4"
-          v-model="code"
+          v-model="otp.state.code"
           label="OTP"
           mask="####"
           fill-mask="#"
@@ -31,19 +27,16 @@
           icon="wifi_protected_setup"
           label="Resend OTP"
           :loading="resendOtpLoading"
-          :disable="isResendOtpDisable"
+          :disable="otp.state.isResendOtpDisable"
           @click="mutateResendOtp()"
         />
       </div>
 
       <Timer
-        v-if="showTimer"
-        :seconds="timerSeconds"
+        v-if="otp.state.showTimer"
+        :seconds="otp.state.timerSeconds"
         label="Resend OTP in"
-        @timeup="
-          showTimer = false;
-          isResendOtpDisable = false;
-        "
+        @timeup="otp.methods.onOtpExpire()"
       />
 
       <PrimaryButton
@@ -59,10 +52,11 @@
 <script>
 import otpVerify from 'src/graph/otp/verify.gql';
 import { useForm } from 'src/composables/useForm';
+import { useOtp } from 'src/composables/useOtp';
 import Timer from 'src/components/Timer.vue';
 import { useMutation } from '@vue/apollo-composable';
 import login from 'src/graph/auth/login.gql';
-import { inject, getCurrentInstance } from 'vue';
+import { inject } from 'vue';
 export default {
   components: {
     Timer
@@ -86,23 +80,19 @@ export default {
       return {
         username: this.username,
         password: this.password,
-        code: Number(this.code),
+        code: Number(this.otp.state.code),
         codeFor: 'sign_in'
       };
     }
   },
   data() {
-    return {
-      code: null,
-      showTimer: true,
-      timerSeconds: 120,
-      isResendOtpDisable: true
-    };
+    return {};
   },
   setup(props) {
     const form = useForm();
-    const instance = getCurrentInstance();
     const gqlTag = inject('$gql');
+
+    const otp = useOtp();
 
     const {
       loading: resendOtpLoading,
@@ -120,20 +110,33 @@ export default {
 
     onDone((res) => {
       form.notifySuccess(res.data.login.message);
-      instance.data.isResendOtpDisable = true;
-      instance.data.showTimer = true;
+      otp.methods.onOtpSend();
     });
 
     onError((error) => {
       form.notifyError(error.message);
+      otp.methods.resetOtp();
     });
 
     return {
       otpVerify,
       form,
       resendOtpLoading,
-      mutateResendOtp
+      mutateResendOtp,
+      otp
     };
+  },
+  methods: {
+    onLoginSuccess($event) {
+      this.form.notifySuccess(
+        `Welcome ${$event.data.verifyCode.user.name} to BuildItIndia`
+      );
+
+      this.$emit('login-success', {
+        user: $event.data.verifyCode.user,
+        token: $event.data.verifyCode.token
+      });
+    }
   }
 };
 </script>

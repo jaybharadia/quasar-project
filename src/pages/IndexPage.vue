@@ -1,32 +1,15 @@
 <template>
-  <q-page class="flex flex-center">
-
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    />
-
-    <FetchExample message="vue3-apollo-quasar starter.dev!"/>
-
-  </q-page>
+  <q-page class="flex flex-center"> </q-page>
 </template>
 
 <script>
-import FetchExample from './FetchExample.vue'
 export default {
   name: 'IndexPage',
-  data () {
-    return {
-
-    }
+  data() {
+    return {};
   },
-  components: {
-    FetchExample
-  }
-}
+  components: {}
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

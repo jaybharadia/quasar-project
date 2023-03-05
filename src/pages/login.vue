@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md">
+  <div class="q-pa-md" transition="slide-left">
     <q-card bordered class="my-card q-pa-m">
       <q-stepper v-model="step" ref="stepper" color="primary" animated>
         <q-step
@@ -21,6 +21,7 @@
             :username="username"
             :password="password"
             :getOtpOnDefaultPartner="getOtpOnDefaultPartner"
+            @login-success="afterLogin"
           />
         </q-step>
       </q-stepper>
@@ -32,6 +33,8 @@
 import { useForm } from 'src/composables/useForm';
 import CredentialsForm from 'src/components/login/CredentialsForm.vue';
 import OtpForm from 'src/components/login/OtpForm.vue';
+
+import { useUserStore } from 'stores/user-store';
 export default {
   components: {
     CredentialsForm,
@@ -40,8 +43,11 @@ export default {
   setup() {
     const form = useForm();
 
+    const userStore = useUserStore();
+
     return {
-      form
+      form,
+      userStore
     };
   },
   mounted() {},
@@ -60,6 +66,11 @@ export default {
       this.password = data.password;
       this.getOtpOnDefaultPartner = data.getOtpOnDefaultPartner;
       this.$refs.stepper.next();
+    },
+    afterLogin(res) {
+      localStorage.setItem('token', res.token);
+      this.userStore.setUser(res.user);
+      this.$router.push('/');
     }
   }
 };
