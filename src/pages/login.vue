@@ -35,6 +35,7 @@ import CredentialsForm from 'src/components/login/CredentialsForm.vue';
 import OtpForm from 'src/components/login/OtpForm.vue';
 
 import { useUserStore } from 'stores/user-store';
+import { setToken } from 'src/boot/plugins/axios';
 export default {
   components: {
     CredentialsForm,
@@ -68,8 +69,8 @@ export default {
       this.$refs.stepper.next();
     },
     afterLogin(res) {
-      localStorage.setItem('token', res.token);
       this.userStore.setUser(res.user);
+      setToken(res.token);
       this.$router.push('/');
     }
   }

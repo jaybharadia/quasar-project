@@ -10,6 +10,9 @@ const routes = [
       {
         path: 'login',
         name: 'login-page',
+        meta: {
+          public: true
+        },
         component: () => import('pages/login.vue')
       }
     ]
@@ -28,6 +31,6 @@ const routes = [
     path: '/:catchAll(.*)*',
     component: () => import('pages/ErrorNotFound.vue')
   }
-]
+];
 
-export default routes
+export default routes;
