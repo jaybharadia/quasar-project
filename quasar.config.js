@@ -8,8 +8,8 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-const { configure } = require('quasar/wrappers')
-const graphql = require('@rollup/plugin-graphql').default
+const { configure } = require('quasar/wrappers');
+const graphql = require('@rollup/plugin-graphql').default;
 module.exports = configure(function (ctx) {
   return {
     eslint: {
@@ -86,7 +86,7 @@ module.exports = configure(function (ctx) {
       ],
 
       extendViteConf (viteConfig) {
-        viteConfig.resolve.extensions = ['.js', '.json', '.vue', '.gql']
+        viteConfig.resolve.extensions = ['.js', '.json', '.vue', '.gql'];
       }
     },
 
@@ -116,7 +116,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ['Notify']
+      plugins: ['Notify', 'Meta']
     },
 
     // animations: 'all', // --- includes all animations
@@ -218,5 +218,5 @@ module.exports = configure(function (ctx) {
       // extendBexScriptsConf (esbuildConf) {}
       // extendBexManifestJson (json) {}
     }
-  }
-})
+  };
+});

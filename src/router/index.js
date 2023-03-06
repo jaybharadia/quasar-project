@@ -30,7 +30,7 @@ export default route(function (/* { store, ssrContext } */) {
     if (to.meta && to.meta.public) { next(); } else {
       const token = getToken();
       if (token) {
-
+        next();
       } else next({ name: 'login-page' });
     }
   });

@@ -36,12 +36,16 @@ import OtpForm from 'src/components/login/OtpForm.vue';
 
 import { useUserStore } from 'stores/user-store';
 import { setToken } from 'src/boot/plugins/axios';
+import { useMeta } from 'quasar';
 export default {
   components: {
     CredentialsForm,
     OtpForm
   },
   setup() {
+    useMeta({
+      titleTemplate: (title) => `${title} | Login`
+    });
     const form = useForm();
 
     const userStore = useUserStore();

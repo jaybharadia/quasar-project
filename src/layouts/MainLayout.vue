@@ -28,7 +28,10 @@
         </q-tabs>
       </q-header>
 
-      <LeftDrawer :isOpen="leftDrawerOpen" :width="200" />
+      <LeftDrawer
+        :isOpen="leftDrawerOpen"
+        :width="layoutStore.leftDrawerWidth"
+      />
 
       <q-drawer v-model="rightDrawerOpen" side="right" elevated>
         <!-- drawer content -->

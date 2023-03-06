@@ -1,4 +1,6 @@
 
+import privateRoutes from './private/index';
+
 const routes = [
 
   {
@@ -20,9 +22,8 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
-    ]
+    redirect: { name: 'home-page' },
+    children: privateRoutes
   },
 
   // Always leave this as last one,

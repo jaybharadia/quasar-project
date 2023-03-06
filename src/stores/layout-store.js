@@ -4,7 +4,8 @@ export const useLayoutStore = defineStore('layout', {
   state: () => {
     return {
       showFooter: false,
-      componentName: null
+      componentName: null,
+      leftDrawerWidth: 200
     };
   },
   getters: {
