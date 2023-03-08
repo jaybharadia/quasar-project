@@ -11,6 +11,8 @@ import { getToken } from 'src/boot/plugins/axios';
  * with the Router instance.
  */
 
+let routerInstance = null;
+
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
@@ -35,5 +37,9 @@ export default route(function (/* { store, ssrContext } */) {
     }
   });
 
+  routerInstance = Router;
+
   return Router;
 });
+
+export { routerInstance };

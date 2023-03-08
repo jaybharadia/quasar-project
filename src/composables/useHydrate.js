@@ -1,9 +1,20 @@
-const userStore = useUserStore();
-import { useUserStore } from 'stores/user-store';
 import { useQuery } from '@vue/apollo-composable';
-const useHydrate = () => {
-  const userStore = useUserStore();
+import gql from 'graphql-tag';
+import hydrateGql from 'src/graph/hydrate.gql';
+export const useHydrate = () => {
   const hydrate = (res) => {
-    userStore.setUser(res);
+    const HYDRATE_GQL = gql`${hydrateGql}`;
+
+    const { loading, onError, onResult } = useQuery(HYDRATE_GQL);
+
+    return {
+      loading,
+      onResult,
+      onError
+    };
+  };
+
+  return {
+    hydrate
   };
 };

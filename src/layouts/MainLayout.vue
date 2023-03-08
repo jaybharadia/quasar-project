@@ -58,9 +58,15 @@
 import { useLayoutStore } from 'src/stores/layout-store';
 import KycAlert from 'src/components/footer/KycAlert.vue';
 import LeftDrawer from 'src/components/layout/LeftDrawer.vue';
+
+import { useHydrate } from 'src/composables/useHydrate';
 export default {
   setup() {
     const layoutStore = useLayoutStore();
+
+    const { hydrate } = useHydrate();
+
+    hydrate();
 
     return {
       layoutStore
