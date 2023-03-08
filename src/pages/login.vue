@@ -21,7 +21,7 @@
             :username="username"
             :password="password"
             :getOtpOnDefaultPartner="getOtpOnDefaultPartner"
-            @login-success="afterLogin"
+            @login-success="afterLogin($event.token, $event)"
           />
         </q-step>
       </q-stepper>
@@ -34,8 +34,7 @@ import { useForm } from 'src/composables/useForm';
 import CredentialsForm from 'src/components/login/CredentialsForm.vue';
 import OtpForm from 'src/components/login/OtpForm.vue';
 
-import { useUserStore } from 'stores/user-store';
-import { setToken } from 'src/boot/plugins/axios';
+import { useLogin } from 'src/composables/auth/useLogin';
 import { useMeta } from 'quasar';
 export default {
   components: {
@@ -48,11 +47,11 @@ export default {
     });
     const form = useForm();
 
-    const userStore = useUserStore();
+    const { afterLogin } = useLogin();
 
     return {
       form,
-      userStore
+      afterLogin
     };
   },
   mounted() {},
@@ -71,11 +70,6 @@ export default {
       this.password = data.password;
       this.getOtpOnDefaultPartner = data.getOtpOnDefaultPartner;
       this.$refs.stepper.next();
-    },
-    afterLogin(res) {
-      this.userStore.setUser(res.user);
-      setToken(res.token);
-      this.$router.push('/');
     }
   }
 };

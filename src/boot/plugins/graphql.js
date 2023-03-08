@@ -14,7 +14,8 @@ import { setContext } from '@apollo/client/link/context';
 // import fetch from 'cross-fetch';
 
 // HTTP connection to the API
-const httpLink = createHttpLink({
+
+export const httpLink = createHttpLink({
   // You should use an absolute URL here
   uri: process.env.GRAPHQL_URL
   // fetch,
@@ -24,14 +25,24 @@ const publicHttpLink = createHttpLink({
   uri: process.env.GRAPHQL_OPEN_URL
 });
 
-const authLink = setContext((_, { headers }) => {
-  const authToken = '';
+// const authLink = setContext((_, { headers }) => {
+//   const authToken = '';
 
-  return authToken
-    ? { headers: { ...headers, authorization: `token ${authToken}` } }
-    : { headers };
-});
+//   return authToken
+//     ? { headers: { ...headers, authorization: `token ${authToken}` } }
+//     : { headers };
+// });
 
+export const setAuthorizationHeader = (authToken) => {
+  return setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: authToken ? `Bearer ${authToken}` : ''
+      }
+    };
+  });
+};
 // Cache implementation
 // export const cache = new InMemoryCache({
 //   typePolicies: {
@@ -50,7 +61,7 @@ const authLink = setContext((_, { headers }) => {
 const cache = new InMemoryCache();
 // Create the apollo client
 export const apolloClient = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: httpLink,
   cache
 });
 

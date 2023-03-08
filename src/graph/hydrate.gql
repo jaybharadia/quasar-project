@@ -1,0 +1,115 @@
+query {
+  me {
+    id
+    name
+    mobileNo
+    email
+    lastLoginDate
+    status
+    emailVerifiedAt
+    mobileVerifiedAt
+    username
+
+    companies {
+      id
+      gstNo
+      panNo
+      name
+      credit
+      availableCredit
+      utilizeCredit
+      mobileNo
+      mcc
+      team {
+        name
+        mobileNo
+        description
+        id
+      }
+      partners {
+        name
+      }
+      type {
+        id
+      }
+      kycStatus
+      documents {
+        pancard {
+          id
+          fileName
+          url
+          size
+          mimeType
+          extension
+        }
+
+        gstCertificate {
+          id
+          fileName
+          url
+          size
+          mimeType
+          extension
+        }
+        msmeCertificate {
+          id
+          fileName
+          url
+          size
+          mimeType
+          extension
+        }
+        cancelledCheque {
+          id
+          fileName
+          url
+          size
+          mimeType
+          extension
+        }
+        partnershipMoa {
+          partnership {
+            id
+            fileName
+            url
+            size
+            mimeType
+            extension
+          }
+          partnershipAoa {
+            id
+            fileName
+            url
+            size
+            mimeType
+            extension
+          }
+          partnershipDeed {
+            id
+            fileName
+            url
+            size
+            mimeType
+            extension
+          }
+          partnershipMoa {
+            id
+            fileName
+            url
+            size
+            mimeType
+            extension
+          }
+        }
+        authorityLetter {
+          id
+          fileName
+          url
+          size
+          mimeType
+          extension
+        }
+      }
+    }
+  }
+}
