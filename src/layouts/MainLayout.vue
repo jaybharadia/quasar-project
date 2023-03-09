@@ -1,5 +1,9 @@
 <template>
-  <q-intersection transition="slide-left">
+  <HydrateLoader
+    v-if="isHydrating"
+    class="window-height flex column flex-center"
+  />
+  <q-intersection transition="slide-left" v-else>
     <q-layout view="hHh lpR fFf">
       <q-header elevated class="bg-primary text-white">
         <q-toolbar>
@@ -14,18 +18,21 @@
 
           <!-- <q-btn dense flat round icon="menu" @click="toggleRightDrawer" /> -->
           <q-space></q-space>
+          <q-tabs align="left">
+            <q-route-tab to="/home" label="Home" />
+            <q-route-tab to="/projects" label="Projects" />
+            <q-route-tab to="/orders" label="Orders" />
+            <q-route-tab to="/invoices" label="Invoices" />
+          </q-tabs>
+
+          <q-space></q-space>
           <q-btn flat round dense icon="local_shipping" class="q-ml-sm-lg" />
           <q-btn flat round dense icon="contact_phone" class="q-ml-sm-lg" />
           <q-btn flat round dense icon="account_circle" class="q-ml-sm-lg" />
           <q-btn flat round dense icon="logout" class="q-ml-sm-lg" />
         </q-toolbar>
 
-        <q-tabs align="left">
-          <q-route-tab to="/home" label="Home" />
-          <q-route-tab to="/projects" label="Projects" />
-          <q-route-tab to="/orders" label="Orders" />
-          <q-route-tab to="/invoices" label="Invoices" />
-        </q-tabs>
+        <div id="sub-header"></div>
       </q-header>
 
       <LeftDrawer
@@ -60,21 +67,24 @@ import KycAlert from 'src/components/footer/KycAlert.vue';
 import LeftDrawer from 'src/components/layout/LeftDrawer.vue';
 
 import { useHydrate } from 'src/composables/useHydrate';
+import HydrateLoader from 'src/components/loader/Hydrate.vue';
 export default {
   setup() {
     const layoutStore = useLayoutStore();
 
     const { hydrate } = useHydrate();
 
-    hydrate();
+    const { loading: isHydrating } = hydrate();
 
     return {
-      layoutStore
+      layoutStore,
+      isHydrating
     };
   },
   components: {
     KycAlert,
-    LeftDrawer
+    LeftDrawer,
+    HydrateLoader
   },
   data() {
     return {
