@@ -13,7 +13,7 @@
             <q-avatar>
               <img src="favicon.ico" />
             </q-avatar>
-            BuildItIndia
+            {{ $options.project.name }}
           </q-toolbar-title>
 
           <!-- <q-btn dense flat round icon="menu" @click="toggleRightDrawer" /> -->
@@ -65,16 +65,21 @@
 import { useLayoutStore } from 'src/stores/layout-store';
 import KycAlert from 'src/components/footer/KycAlert.vue';
 import LeftDrawer from 'src/components/layout/LeftDrawer.vue';
-
+import { project } from '../../package.json';
 import { useHydrate } from 'src/composables/useHydrate';
 import HydrateLoader from 'src/components/loader/Hydrate.vue';
 export default {
+  project,
   setup() {
     const layoutStore = useLayoutStore();
 
     const { hydrate } = useHydrate();
 
-    const { loading: isHydrating } = hydrate();
+    const { loading: isHydrating, onResult, afterHydrate } = hydrate();
+
+    onResult((res) => {
+      afterHydrate(res);
+    });
 
     return {
       layoutStore,

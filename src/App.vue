@@ -5,12 +5,12 @@
 <script>
 import { defineComponent } from 'vue';
 import { useMeta } from 'quasar';
-
+import { project } from '../package.json';
 export default defineComponent({
   name: 'App',
   setup() {
     useMeta({
-      title: 'BuildItIndia '
+      title: project.name
     });
   }
 });

@@ -128,10 +128,6 @@ export default {
   },
   methods: {
     onLoginSuccess($event) {
-      this.form.notifySuccess(
-        `Welcome ${$event.data.verifyCode.user.name} to BuildItIndia`
-      );
-
       this.$emit('login-success', {
         user: $event.data.verifyCode.user,
         token: $event.data.verifyCode.token

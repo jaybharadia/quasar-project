@@ -11,6 +11,12 @@ import {
   ApolloClients
 } from '@vue/apollo-composable';
 import { setContext } from '@apollo/client/link/context';
+
+import { onError } from '@apollo/client/link/error';
+
+import { useLogout } from 'src/composables/auth/useLogout';
+
+import { useAlert } from 'src/composables/useAlert';
 // import fetch from 'cross-fetch';
 
 // HTTP connection to the API
@@ -59,10 +65,31 @@ export const setAuthorizationHeader = (authToken) => {
 // });
 
 const cache = new InMemoryCache();
+
+// Log any GraphQL errors or network error that occurred
+export const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors) {
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  }
+  if (networkError) {
+    const alert = useAlert();
+
+    const { logout } = useLogout();
+
+    alert.notifyError(networkError.result.message);
+    logout();
+  }
+});
+
 // Create the apollo client
 export const apolloClient = new ApolloClient({
-  link: httpLink,
+  link: errorLink.concat(httpLink),
   cache
+
 });
 
 export const publicApolloClient = new ApolloClient({
