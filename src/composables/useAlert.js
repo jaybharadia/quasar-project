@@ -7,8 +7,17 @@ const useAlert = () => {
     });
   };
 
+  const notifySuccess = (message) => {
+    console.log('notify success->>', message);
+    Notify.create({
+      type: 'positive',
+      message: message || 'Success'
+    });
+  };
+
   return {
-    notifyError
+    notifyError,
+    notifySuccess
   };
 };
 
