@@ -1,13 +1,13 @@
 import { setToken } from 'src/boot/plugins/axios';
-import { useQuasar } from 'quasar';
 import { useGraphql } from '../useGraphql';
 import messages from 'src/data/messages';
 import { routerInstance } from 'src/router';
+import { useAlert } from '../useAlert';
 
 const useLogin = () => {
-  const $q = useQuasar();
-
   const graphql = useGraphql();
+
+  const { notifyError, notifySuccess } = useAlert();
 
   const afterLogin = (token, res) => {
     const axiosPromise = setToken(token);
@@ -17,17 +17,11 @@ const useLogin = () => {
     Promise.all([axiosPromise, graphPromise]).then(() => {
       routerInstance.push({ name: 'home-page' });
     }).catch(() => {
-      $q.notify({
-        type: 'negative',
-        message: messages.auth.tokenNotFound
-      });
+      notifyError(messages.auth.tokenNotFound);
     });
 
     if (res.showKYCApproveNotification) {
-      $q.notify({
-        type: 'positive',
-        message: messages.notifyKycApprove
-      });
+      notifySuccess(messages.notifyKycApprove);
     }
   };
   return {
