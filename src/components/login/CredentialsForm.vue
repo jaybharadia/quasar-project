@@ -13,14 +13,14 @@
       defaultPartnerOtpSend: getOtpOnDefaultPartner
     }"
     @done="
-      form.notifySuccess($event.data.login.message);
+      notifySuccess($event.data.login.message);
       $emit('credential-success', {
         username,
         password,
         getOtpOnDefaultPartner
       });
     "
-    @error="(error) => form.notifyError(error.message)"
+    @error="(error) => notifyError(error.message)"
     v-slot="{ mutate, loading }"
   >
     <q-form @submit="mutate()" @reset="onReset" class="q-gutter-md">
@@ -63,15 +63,16 @@
 
 <script>
 import login from 'src/graph/auth/login.gql';
-import { useForm } from 'src/composables/useForm';
+import { useAlert } from 'src/composables/useAlert';
 export default {
   components: {},
   setup() {
-    const form = useForm();
+    const { notifyError, notifySuccess } = useAlert();
 
     return {
       login,
-      form
+      notifyError,
+      notifySuccess
     };
   },
   mounted() {},

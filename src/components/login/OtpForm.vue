@@ -9,7 +9,7 @@
     "
     :variables="variables"
     @done="onLoginSuccess"
-    @error="(error) => form.notifyError(error.message)"
+    @error="(error) => notifyError(error.message)"
     v-slot="{ mutate, loading }"
   >
     <q-form @submit="mutate()" class="q-gutter-md">
@@ -36,7 +36,7 @@
         v-if="otp.state.showTimer"
         :seconds="otp.state.timerSeconds"
         label="Resend OTP in"
-        @timeup="otp.methods.onOtpExpire()"
+        @timeup="otp.methods.onTimerExpire()"
       />
 
       <PrimaryButton
@@ -51,12 +51,12 @@
 
 <script>
 import otpVerify from 'src/graph/otp/verify.gql';
-import { useForm } from 'src/composables/useForm';
 import { useOtp } from 'src/composables/useOtp';
 import Timer from 'src/components/Timer.vue';
 import { useMutation } from '@vue/apollo-composable';
 import login from 'src/graph/auth/login.gql';
 import { inject } from 'vue';
+import { useAlert } from 'src/composables/useAlert';
 export default {
   components: {
     Timer
@@ -89,8 +89,9 @@ export default {
     return {};
   },
   setup(props) {
-    const form = useForm();
     const gqlTag = inject('$gql');
+
+    const { notifyError, notifySuccess } = useAlert();
 
     const otp = useOtp();
 
@@ -109,18 +110,19 @@ export default {
     });
 
     onDone((res) => {
-      form.notifySuccess(res.data.login.message);
+      notifySuccess(res.data.login.message);
       otp.methods.onOtpSend();
     });
 
     onError((error) => {
-      form.notifyError(error.message);
+      notifyError(error.message);
       otp.methods.resetOtp();
     });
 
     return {
       otpVerify,
-      form,
+      notifyError,
+      notifySuccess,
       resendOtpLoading,
       mutateResendOtp,
       otp
