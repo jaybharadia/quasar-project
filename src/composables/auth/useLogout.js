@@ -20,7 +20,7 @@ const useLogout = () => {
     mutate();
     onDone(() => {
       localStorage.removeItem('bii-token');
-      notifySuccess('Success');
+      notifySuccess(messages.auth.logout.successMessage);
     });
 
     onError((error) => {

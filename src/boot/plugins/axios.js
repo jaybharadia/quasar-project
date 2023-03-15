@@ -1,6 +1,8 @@
 import { boot } from 'quasar/wrappers';
 import axios from 'axios';
 import messages from 'src/data/messages/index';
+
+import { useLogout } from 'src/composables/auth/useLogout';
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -35,10 +37,6 @@ const token = getToken();
 
 if (token) { setToken(token); }
 
-const resetToken = () => {
-  localStorage.removeItem('bii-token');
-};
-
 // INTERCEPTORS
 api.interceptors.response.use(
   (response) => {
@@ -46,7 +44,8 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response && error.response.status === 401) {
-      resetToken();
+      const { logout } = useLogout();
+      logout();
     }
 
     if (error.response && error.response.status === 429) {
