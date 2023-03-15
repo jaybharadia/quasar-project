@@ -29,7 +29,14 @@
           <q-btn flat round dense icon="local_shipping" class="q-ml-sm-lg" />
           <q-btn flat round dense icon="contact_phone" class="q-ml-sm-lg" />
           <q-btn flat round dense icon="account_circle" class="q-ml-sm-lg" />
-          <q-btn flat round dense icon="logout" class="q-ml-sm-lg" />
+          <q-btn
+            flat
+            round
+            dense
+            icon="logout"
+            class="q-ml-sm-lg"
+            @click="logout"
+          />
         </q-toolbar>
 
         <div id="sub-header"></div>
@@ -68,6 +75,8 @@ import LeftDrawer from 'src/components/layout/LeftDrawer.vue';
 import { project } from '../../package.json';
 import { useHydrate } from 'src/composables/useHydrate';
 import HydrateLoader from 'src/components/loader/Hydrate.vue';
+
+import { useLogout } from 'src/composables/auth/useLogout';
 export default {
   project,
   setup() {
@@ -75,15 +84,18 @@ export default {
 
     const { hydrate } = useHydrate();
 
+    const { logout } = useLogout();
+
     const { loading: isHydrating, onResult, afterHydrate } = hydrate();
 
     onResult((res) => {
-      afterHydrate(res);
+      afterHydrate(res.data.me);
     });
 
     return {
       layoutStore,
-      isHydrating
+      isHydrating,
+      logout
     };
   },
   components: {

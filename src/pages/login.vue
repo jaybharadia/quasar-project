@@ -30,7 +30,6 @@
 </template>
 
 <script>
-import { useForm } from 'src/composables/useForm';
 import CredentialsForm from 'src/components/login/CredentialsForm.vue';
 import OtpForm from 'src/components/login/OtpForm.vue';
 
@@ -45,12 +44,10 @@ export default {
     useMeta({
       titleTemplate: (title) => `${title} | Login`
     });
-    const form = useForm();
 
     const { afterLogin } = useLogin();
 
     return {
-      form,
       afterLogin
     };
   },

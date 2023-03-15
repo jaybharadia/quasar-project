@@ -3,8 +3,9 @@ import { project } from '../../../package.json';
 export default {
   notifyKycApprove: 'Your KYC Application has been approved',
   auth: {
-    tokenNotFound: 'Please provide token. Token not found. Try again'
+    tokenNotFound: 'Something went wrong while setting token. Try again later'
   },
+  errorMessage: 'Something went wrong. Please try again later.',
   user: {
     welcome: (name) => `Welcome ${name || 'User'} to ${project.name}`
   }
