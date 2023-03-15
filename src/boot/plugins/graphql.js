@@ -14,9 +14,8 @@ import { setContext } from '@apollo/client/link/context';
 
 import { onError } from '@apollo/client/link/error';
 
-import { useLogout } from 'src/composables/auth/useLogout';
-
 import { useAlert } from 'src/composables/useAlert';
+import { useGraphql } from 'src/composables/useGraphql';
 // import fetch from 'cross-fetch';
 
 // HTTP connection to the API
@@ -67,7 +66,7 @@ export const setAuthorizationHeader = (authToken) => {
 const cache = new InMemoryCache();
 
 // Log any GraphQL errors or network error that occurred
-export const errorLink = onError(({ graphQLErrors, networkError }) => {
+export const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) =>
       console.log(
@@ -76,12 +75,16 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
     );
   }
   if (networkError) {
+    if (networkError.statusCode === 401 && operation.getContext().operationName !== 'logout') {
+      // Handling 401 logout mutation infinite loop case
+      const { handle401 } = useGraphql();
+      handle401();
+    }
+
+    // Handling logout 401 case to avoid infinite loop
     const alert = useAlert();
 
-    const { logout } = useLogout();
-
     alert.notifyError(networkError.result.message);
-    logout();
   }
 });
 

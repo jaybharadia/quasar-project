@@ -34,6 +34,7 @@
             round
             dense
             icon="logout"
+            :loading="isLoggingOut"
             class="q-ml-sm-lg"
             @click="logout"
           />
@@ -84,7 +85,7 @@ export default {
 
     const { hydrate } = useHydrate();
 
-    const { logout } = useLogout();
+    const { logout, loading: isLoggingOut } = useLogout();
 
     const { loading: isHydrating, onResult, afterHydrate } = hydrate();
 
@@ -95,7 +96,8 @@ export default {
     return {
       layoutStore,
       isHydrating,
-      logout
+      logout,
+      isLoggingOut
     };
   },
   components: {

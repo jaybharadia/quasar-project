@@ -1,5 +1,7 @@
 import { setAuthorizationHeader, apolloClient, httpLink, errorLink } from 'src/boot/plugins/graphql';
 import messages from 'src/data/messages';
+import { useLogout } from 'src/composables/auth/useLogout';
+
 export const useGraphql = () => {
   const setToken = (token) => {
     return new Promise((resolve, reject) => {
@@ -11,7 +13,13 @@ export const useGraphql = () => {
     });
   };
 
+  const handle401 = () => {
+    const { logout } = useLogout();
+    logout();
+  };
+
   return {
-    setToken
+    setToken,
+    handle401
   };
 };

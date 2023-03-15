@@ -5,23 +5,21 @@ import { useAlert } from '../useAlert';
 import messages from 'src/data/messages/index';
 import gqlTag from 'graphql-tag';
 import { apolloClient } from 'src/boot/plugins/graphql';
-// import { getToken } from 'src/utilities/auth';
 const useLogout = () => {
   provideApolloClient(apolloClient);
   const { notifyError, notifySuccess } = useAlert();
 
   const { loading, onDone, onError, mutate } = useMutation(gqlTag`${logoutGql}`, {
     context: {
-      mutationName: 'logout'
+      operationName: 'logout'
     }
-
   });
 
   const logout = () => {
-    localStorage.removeItem('bii-token');
+    routerInstance.push({ name: 'login-page' });
     mutate();
     onDone(() => {
-      routerInstance.push({ name: 'login-page' });
+      localStorage.removeItem('bii-token');
       notifySuccess('Success');
     });
 
@@ -29,13 +27,12 @@ const useLogout = () => {
       notifyError(error.message || messages.errorMessage);
     });
 
-    return {
-      loading
-    };
+    return true;
   };
 
   return {
-    logout
+    logout,
+    loading
   };
 };
 
