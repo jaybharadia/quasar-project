@@ -14,7 +14,7 @@ export const useHydrate = () => {
     const afterHydrate = (res) => {
       $q.notify({
         type: 'positive',
-        message: messages.user.welcome(res.user ? res.user.name : '')
+        message: messages.user.welcome(res.name ? res.name : '')
       });
     };
 
