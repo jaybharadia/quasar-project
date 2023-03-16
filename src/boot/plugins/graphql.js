@@ -10,12 +10,15 @@ import { createApolloProvider } from '@vue/apollo-option';
 import {
   ApolloClients
 } from '@vue/apollo-composable';
-import { setContext } from '@apollo/client/link/context';
+
+import { getToken } from 'src/utilities/auth';
 
 import { onError } from '@apollo/client/link/error';
 
 import { useAlert } from 'src/composables/useAlert';
 import { useGraphql } from 'src/composables/useGraphql';
+const { handle401, handle429, setToken } = useGraphql();
+
 // import fetch from 'cross-fetch';
 
 // HTTP connection to the API
@@ -38,16 +41,6 @@ const publicHttpLink = createHttpLink({
 //     : { headers };
 // });
 
-export const setAuthorizationHeader = (authToken) => {
-  return setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: authToken ? `Bearer ${authToken}` : ''
-      }
-    };
-  });
-};
 // Cache implementation
 // export const cache = new InMemoryCache({
 //   typePolicies: {
@@ -67,7 +60,6 @@ const cache = new InMemoryCache();
 
 // Log any GraphQL errors or network error that occurred
 export const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
-  const { handle401, handle429 } = useGraphql();
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) =>
       console.log(
@@ -111,6 +103,10 @@ const apolloProvider = createApolloProvider({
     public: publicApolloClient
   }
 });
+
+// Set token if found on app reload
+const token = getToken();
+if (token) { setToken(token); }
 
 export default boot(({ app }) => {
   app.provide('$gql', gql);

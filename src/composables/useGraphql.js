@@ -1,7 +1,8 @@
-import { setAuthorizationHeader, apolloClient, httpLink, errorLink } from 'src/boot/plugins/graphql';
+import { apolloClient, httpLink, errorLink } from 'src/boot/plugins/graphql';
 import messages from 'src/data/messages';
 import { useLogout } from 'src/composables/auth/useLogout';
 import { showLoading } from 'src/utilities/loading';
+import { setContext } from '@apollo/client/link/context';
 
 export const useGraphql = () => {
   const setToken = (token) => {
@@ -22,6 +23,17 @@ export const useGraphql = () => {
   const handle429 = () => {
     showLoading({
       messages: messages.network.tooManyRequest
+    });
+  };
+
+  const setAuthorizationHeader = (authToken) => {
+    return setContext((_, { headers }) => {
+      return {
+        headers: {
+          ...headers,
+          authorization: authToken ? `Bearer ${authToken}` : ''
+        }
+      };
     });
   };
 

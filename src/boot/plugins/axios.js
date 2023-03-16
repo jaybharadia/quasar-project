@@ -3,6 +3,10 @@ import axios from 'axios';
 import messages from 'src/data/messages/index';
 import { showLoading } from 'src/utilities/loading';
 import { useLogout } from 'src/composables/auth/useLogout';
+
+import axiosRetry from 'axios-retry';
+import { RETRY_INTERVAL } from 'src/data/network';
+
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
@@ -19,6 +23,22 @@ const config = {
   }
 };
 const api = axios.create(config);
+
+axiosRetry(api, {
+  retries: 2,
+  retryDelay: () => {
+    return RETRY_INTERVAL;
+  },
+  retryCondition: (error) => {
+    if (error.response.status === 429) {
+      showLoading({
+        message: messages.network.tooManyRequest
+      }, RETRY_INTERVAL);
+      return true;
+    }
+  }
+
+});
 
 const getToken = () => {
   return localStorage.getItem('bii-token');
@@ -46,12 +66,6 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       const { logout } = useLogout();
       logout();
-    }
-
-    if (error.response && error.response.status === 429) {
-      showLoading({
-        message: messages.network.tooManyRequest
-      });
     }
     // If status is not provided, axios is not sure what happend!
     if (!error.response && !error.status) {
