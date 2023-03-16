@@ -1,6 +1,7 @@
 import { setAuthorizationHeader, apolloClient, httpLink, errorLink } from 'src/boot/plugins/graphql';
 import messages from 'src/data/messages';
 import { useLogout } from 'src/composables/auth/useLogout';
+import { showLoading } from 'src/utilities/loading';
 
 export const useGraphql = () => {
   const setToken = (token) => {
@@ -18,8 +19,15 @@ export const useGraphql = () => {
     logout();
   };
 
+  const handle429 = () => {
+    showLoading({
+      messages: messages.network.tooManyRequest
+    });
+  };
+
   return {
     setToken,
-    handle401
+    handle401,
+    handle429
   };
 };

@@ -67,6 +67,7 @@ const cache = new InMemoryCache();
 
 // Log any GraphQL errors or network error that occurred
 export const errorLink = onError(({ graphQLErrors, networkError, operation }) => {
+  const { handle401, handle429 } = useGraphql();
   if (graphQLErrors) {
     graphQLErrors.forEach(({ message, locations, path }) =>
       console.log(
@@ -77,7 +78,6 @@ export const errorLink = onError(({ graphQLErrors, networkError, operation }) =>
   if (networkError) {
     if (networkError.statusCode === 401 && operation.getContext().operationName !== 'logout') {
       // Handling 401 logout mutation infinite loop case
-      const { handle401 } = useGraphql();
       handle401();
     }
 
@@ -85,6 +85,10 @@ export const errorLink = onError(({ graphQLErrors, networkError, operation }) =>
     const alert = useAlert();
 
     alert.notifyError(networkError.result.message);
+
+    if (networkError.statusCode === 429) {
+      handle429();
+    }
   }
 });
 

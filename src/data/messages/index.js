@@ -11,5 +11,8 @@ export default {
   errorMessage: 'Something went wrong. Please try again later.',
   user: {
     welcome: (name) => `Welcome ${name || 'User'} to ${project.name}`
+  },
+  network: {
+    tooManyRequest: 'Server overloaded. Please wait...'
   }
 };

@@ -1,7 +1,7 @@
 import { boot } from 'quasar/wrappers';
 import axios from 'axios';
 import messages from 'src/data/messages/index';
-
+import { showLoading } from 'src/utilities/loading';
 import { useLogout } from 'src/composables/auth/useLogout';
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -49,7 +49,9 @@ api.interceptors.response.use(
     }
 
     if (error.response && error.response.status === 429) {
-      window.alert('Network is Slow. Please try again in some time.');
+      showLoading({
+        message: messages.network.tooManyRequest
+      });
     }
     // If status is not provided, axios is not sure what happend!
     if (!error.response && !error.status) {
