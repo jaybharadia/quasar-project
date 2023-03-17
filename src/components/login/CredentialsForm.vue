@@ -24,6 +24,7 @@
     v-slot="{ mutate, loading }"
   >
     <q-form @submit="mutate()" @reset="onReset" class="q-gutter-md">
+      <VueDatePicker v-model="date" />
       <q-input
         filled
         v-model="username"
@@ -64,8 +65,12 @@
 <script>
 import login from 'src/graph/auth/login.gql';
 import { useAlert } from 'src/composables/useAlert';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 export default {
-  components: {},
+  components: {
+    VueDatePicker
+  },
   setup() {
     const { notifyError, notifySuccess } = useAlert();
 
@@ -81,7 +86,8 @@ export default {
     return {
       username: 'jay',
       password: 'Dev@7$pan',
-      getOtpOnDefaultPartner: false
+      getOtpOnDefaultPartner: false,
+      date: null
     };
   }
 };
