@@ -18,7 +18,8 @@
           class="col-4"
           v-model="otp.state.code"
           label="OTP"
-          mask="####"
+          mask="#_#_#_#"
+          unmasked-value
           fill-mask="#"
           :rules="[(val) => (val && val.length > 0) || 'Field is required*']"
         />
