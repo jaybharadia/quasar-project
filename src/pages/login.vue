@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md" transition="slide-left">
-    <q-card bordered class="my-card q-pa-m">
+    <q-card class="q-pa-m">
       <q-stepper v-model="step" ref="stepper" color="primary" animated>
         <q-step
           :name="1"
@@ -25,6 +25,13 @@
           />
         </q-step>
       </q-stepper>
+
+      <div class="q-pa-sm">
+        <p>
+          Don't have an account?
+          <router-link to="/public/signup">Sign Up</router-link>
+        </p>
+      </div>
     </q-card>
   </div>
 </template>

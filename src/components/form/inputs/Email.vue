@@ -10,13 +10,14 @@
 </template>
 
 <script>
-import { GST as GstRule } from 'src/utilities/validation/index';
+import { email as emailRule } from 'src/utilities/validation';
+
 export default {
   props: {
     modelValue: String,
     label: {
       type: String,
-      default: 'GST *'
+      default: 'Email'
     },
     filled: {
       type: Boolean,
@@ -24,13 +25,10 @@ export default {
     },
     rules: {
       type: Array,
-      default: () => [
-        (val) => (val && val.length > 0) || 'Field is required*',
-        (val) => GstRule(val)
-      ]
+      default: () => emailRule()
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>

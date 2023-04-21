@@ -16,6 +16,14 @@ const routes = [
           public: true
         },
         component: () => import('pages/login.vue')
+      },
+      {
+        path: 'signup',
+        name: 'signup-page',
+        meta: {
+          public: true
+        },
+        component: () => import('pages/signup.vue')
       }
     ]
   },

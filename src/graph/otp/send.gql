@@ -1,0 +1,5 @@
+mutation ($input: SendCodeInput!) {
+  sendCode(input: $input) {
+    code
+  }
+}

@@ -14,15 +14,7 @@
   >
     <q-form @submit="mutate()" class="q-gutter-md">
       <div>
-        <q-input
-          class="col-4"
-          v-model="otp.state.code"
-          label="OTP"
-          mask="#_#_#_#"
-          unmasked-value
-          fill-mask="#"
-          :rules="[(val) => (val && val.length > 0) || 'Field is required*']"
-        />
+        <OtpInput class="col-4" v-model="otp.state.code" />
 
         <PrimaryButton
           icon="wifi_protected_setup"
@@ -58,11 +50,12 @@ import { useMutation } from '@vue/apollo-composable';
 import login from 'src/graph/auth/login.gql';
 import { inject } from 'vue';
 import { useAlert } from 'src/composables/useAlert';
+import OtpInput from 'components/form/inputs/Otp.vue';
 export default {
   components: {
-    Timer
+    Timer,
+    OtpInput
   },
-
   props: {
     username: {
       type: String,

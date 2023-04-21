@@ -110,6 +110,7 @@ if (token) { setToken(token); }
 
 export default boot(({ app }) => {
   app.provide('$gql', gql);
+  app.config.globalProperties.$gql = gql;
   app.provide(ApolloClients, {
     default: apolloClient,
     public: publicApolloClient

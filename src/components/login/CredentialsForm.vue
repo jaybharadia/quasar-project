@@ -23,22 +23,10 @@
     @error="(error) => notifyError(error.message)"
     v-slot="{ mutate, loading }"
   >
-    <q-form @submit="mutate()" @reset="onReset" class="q-gutter-md">
-      <q-input
-        filled
-        v-model="username"
-        label="Username *"
-        lazy-rules
-        :rules="[(val) => (val && val.length > 0) || 'Field is required*']"
-      />
+    <q-form @submit="mutate()" class="q-gutter-md">
+      <UserName v-model="username" />
 
-      <PasswordToggleInput
-        v-model="password"
-        lazy-rules
-        filled
-        label="Your password *"
-        :rules="[(val) => (val && val.length > 0) || 'Field is required*']"
-      />
+      <PasswordInput v-model="password" />
 
       <div>
         <q-toggle
@@ -51,12 +39,7 @@
         />
       </div>
 
-      <PrimaryButton
-        label="GET OTP"
-        icon="lock"
-        :loading="loading"
-        type="submit"
-      />
+      <OtpButton :loading="loading" />
     </q-form>
   </ApolloMutation>
 </template>
@@ -64,8 +47,15 @@
 <script>
 import login from 'src/graph/auth/login.gql';
 import { useAlert } from 'src/composables/useAlert';
+import UserName from '../form/inputs/UserName.vue';
+import PasswordInput from 'src/components/form/inputs/PasswordInput.vue';
+import OtpButton from 'src/components/buttons/Otp.vue';
 export default {
-  components: {},
+  components: {
+    UserName,
+    PasswordInput,
+    OtpButton
+  },
   setup() {
     const { notifyError, notifySuccess } = useAlert();
 
@@ -81,6 +71,7 @@ export default {
     return {
       username: 'jay',
       password: 'Dev@7$pan',
+      confirmPassword: '',
       getOtpOnDefaultPartner: false
     };
   }

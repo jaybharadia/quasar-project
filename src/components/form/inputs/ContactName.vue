@@ -11,13 +11,14 @@
 
 <script>
 import { required } from 'src/utilities/validation';
+import messages from 'src/data/messages';
 export default {
   emits: ['update:modelValue'],
   props: {
     modelValue: String,
     label: {
       type: String,
-      default: 'Username'
+      default: messages.field.contactName
     },
     filled: {
       type: Boolean,

@@ -19,16 +19,18 @@
 </template>
 
 <script>
+import messages from 'src/data/messages';
+import { required } from 'src/utilities/validation/index';
 export default {
   props: {
     modelValue: String,
     rules: {
       type: Array,
-      default: () => [(val) => (val && val.length > 0) || 'Field is required*']
+      default: () => [(value) => required(value)]
     },
     label: {
       type: String,
-      default: 'Your password *'
+      default: messages.auth.signup.password
     },
     filled: {
       type: Boolean,

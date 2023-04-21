@@ -1,5 +1,11 @@
 <template>
-  <q-btn color="primary" :label="label" :icon="icon" :loading="loading">
+  <q-btn
+    color="primary"
+    :label="label"
+    :icon="icon"
+    :loading="loading"
+    @click="$emit('click')"
+  >
     <slot></slot>
   </q-btn>
 </template>

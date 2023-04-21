@@ -10,6 +10,7 @@
 
 const { configure } = require('quasar/wrappers');
 const graphql = require('@rollup/plugin-graphql').default;
+const path = require('path');
 module.exports = configure(function (ctx) {
   return {
     eslint: {
@@ -85,6 +86,11 @@ module.exports = configure(function (ctx) {
       vitePlugins: [
         [graphql()]
       ],
+
+      alias: {
+        graph: path.join(__dirname, './src/graph'),
+        composables: path.join(__dirname, './src/composables')
+      },
 
       extendViteConf (viteConfig) {
         viteConfig.resolve.extensions = ['.js', '.json', '.vue', '.gql'];

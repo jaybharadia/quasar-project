@@ -1,0 +1,5 @@
+query ($gstNo: String!) {
+  companyFromGstNo(gstNo: $gstNo) {
+    companyName
+  }
+}
